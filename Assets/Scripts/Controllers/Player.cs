@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    {
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
@@ -13,12 +12,16 @@ public class Player : MonoBehaviour
     public int numberOfTrailBombs = 5;
     public float bombCorner = 3;
 
+    [Space(15)]
     public float warpDist = 0.5f;
     public float radarDist = 10f;
+    public float speed = 0.05f;
 
     // Update is called once per frame
     void Update()
     {
+        PlayerMovement();
+
         if (Input.GetKeyDown(KeyCode.B))
         {
             SpawnBombAtOffset(new Vector3(0, 1));
@@ -41,6 +44,8 @@ public class Player : MonoBehaviour
         {
             DetectAsteroids(radarDist, asteroidTransforms);
         }
+
+    
     }
     private void SpawnBombAtOffset(Vector3 inOffset) //Spawn Bomb at Offset
     {
@@ -103,5 +108,21 @@ public class Player : MonoBehaviour
                 Debug.DrawLine(transform.position, end, bluecolor, 2f, false);
             }
         }
+    }
+
+    private void PlayerMovement()
+    {
+        if (Input.GetKey(KeyCode.LeftArrow))
+            transform.position += Vector3.left * speed;
+      
+        if (Input.GetKey(KeyCode.RightArrow))
+            transform.position += Vector3.right * speed;
+        
+        if (Input.GetKey(KeyCode.UpArrow))
+            transform.position += Vector3.up * speed;
+        
+        if (Input.GetKey(KeyCode.DownArrow))
+            transform.position += Vector3.down * speed;
+        
     }
 }
