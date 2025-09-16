@@ -16,6 +16,10 @@ public class Player : MonoBehaviour
     public float warpDist = 0.5f;
     public float radarDist = 10f;
     public float speed = 0.05f;
+    public float maxSpeed = 1f;
+    public float accelerationTime = 5;
+
+    private Vector3 velocity = Vector3.zero;
 
     // Update is called once per frame
     void Update()
@@ -45,7 +49,7 @@ public class Player : MonoBehaviour
             DetectAsteroids(radarDist, asteroidTransforms);
         }
 
-    
+
     }
     private void SpawnBombAtOffset(Vector3 inOffset) //Spawn Bomb at Offset
     {
@@ -112,17 +116,33 @@ public class Player : MonoBehaviour
 
     private void PlayerMovement()
     {
+        float acceleration = maxSpeed / accelerationTime;
+
         if (Input.GetKey(KeyCode.LeftArrow))
-            transform.position += Vector3.left * speed;
-      
+        {
+            velocity += acceleration * Time.deltaTime * Vector3.left;
+            //transform.position += Vector3.left * speed;
+        }   
+
         if (Input.GetKey(KeyCode.RightArrow))
-            transform.position += Vector3.right * speed;
-        
+        {
+            velocity += acceleration * Time.deltaTime * Vector3.right;
+            //transform.position += Vector3.right * speed;
+        }
+
         if (Input.GetKey(KeyCode.UpArrow))
-            transform.position += Vector3.up * speed;
-        
+        {
+            velocity += acceleration * Time.deltaTime * Vector3.up;
+            //transform.position += Vector3.up * speed;
+        }
+
         if (Input.GetKey(KeyCode.DownArrow))
-            transform.position += Vector3.down * speed;
-        
+        {
+            velocity += acceleration * Time.deltaTime * Vector3.down;
+            //transform.position += Vector3.down * speed;
+        }
+
+        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+        transform.position += velocity * Time.deltaTime;
     }
 }
